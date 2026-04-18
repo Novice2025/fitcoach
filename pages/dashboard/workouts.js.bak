@@ -1,0 +1,986 @@
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import DashboardLayout from '../../components/DashboardLayout';
+import styles from './Workouts.module.css';
+import { requestJson } from '../../lib/api';
+const EXERCISES_BY_BODY_PART = {
+  "Pectorais": ["Supino"],
+  "Costas": ["Puxada"]
+};
+
+const repsOptions = ["6-8", "8-10", "10-12", "12-15", "15-20", "20+"];
+const dayOfWeekOptions = ["Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado", "Domingo"];
+const genderOptions = ["Masculino", "Feminino", "Outro"];
+const levelOptions = ["Iniciante", "Intermediário", "Avançado"];
+const frequencyOptions = ["1x por semana", "2x por semana", "3x por semana", "4x por semana", "5x por semana", "6x por semana", "Todos os dias"];
+const objectiveOptions = ["Hipertrofia", "Emagrecimento", "Definição", "Força", "Resistência", "Saúde"];
+const statusOptions = ["Pendente", "Concluído", "Perdido", "Reagendado"];
+const alimentationOptions = ["Dieta Flexível", "Low Carb", "Cetogênica", "Vegetariana", "Vegana", "Padrão"];
+const medicalOptions = ["Nenhuma", "Hipertensão", "Diabetes", "Problemas Cardíacos", "Lesão Articular", "Asma"];
+const aerobicOptions = ["Nenhum", "Caminhada", "Corrida", "Bicicleta", "Elíptico", "Natação", "Dança"];
+const extraCurricularOptions = ["Nenhuma", "Futebol", "Basquete", "Vôlei", "Natação", "Artes Marciais", "Yoga", "Pilates"];
+
+export default function Workouts() {
+  const [workoutLogs, setWorkoutLogs] = useState([]);
+  const [students, setStudents] = useState([]);
+  const [selectedStudentName, setSelectedStudentName] = useState('');
+  const [bodyPart, setBodyPart] = useState('');
+  const [exercise, setExercise] = useState('');
+  const [sets, setSets] = useState('');
+  const [reps, setReps] = useState('');
+  const [dayOfWeek, setDayOfWeek] = useState('');
+  const [date, setDate] = useState('');
+  const [status, setStatus] = useState(statusOptions[0]);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  const availableExercises = useMemo(() => {
+    return bodyPart ? EXERCISES_BY_BODY_PART[bodyPart] : [];
+  }, [bodyPart]);
+
+  const fetchStudents = useCallback(async () => {
+    try {
+      const data = await requestJson('/students');
+      if (data === null) {
+        setError('Unable to connect to the server. Please ensure the backend is running on port 5001.');
+        setStudents([]);
+        return;
+      }
+      setStudents(data);
+    } catch (err) {
+      console.error("Erro ao buscar alunos:", err);
+      setError("Erro ao carregar a lista de alunos.");
+    }
+  }, []);
+
+  const fetchWorkoutLogs = useCallback(async () => {
+    try {
+      const data = await requestJson('/workouts');
+      if (data === null) {
+        setError('Unable to connect to the server. Please ensure the backend is running on port 5001.');
+        setWorkoutLogs([]);
+        return;
+      }
+      setWorkoutLogs(data);
+      setError(null);
+    } catch (err) {
+      console.error("Erro ao buscar registros de treinos:", err);
+      setError("Erro ao carregar registros de treinos. Verifique o backend.");
+      setWorkoutLogs([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchStudents().catch(err => console.error('Error fetching students:', err));
+    fetchWorkoutLogs().catch(err => console.error('Error fetching workouts:', err));
+  }, [fetchStudents, fetchWorkoutLogs]);
+
+  const handleAddWorkoutLog = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccessMessage(null);
+
+    if (!selectedStudentName || !bodyPart || !exercise || !sets || !reps || !dayOfWeek || !date || !status) {
+      setError("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    try {
+      const newLog = await requestJson('/workouts', {
+        method: 'POST',
+        body: JSON.stringify({
+          student_name: selectedStudentName,
+          body_part: bodyPart,
+          exercise: exercise,
+          sets: parseInt(sets),
+          reps: reps,
+          day_of_week: dayOfWeek,
+          date: date,
+          status: status,
+        }),
+      });
+
+      setWorkoutLogs([...workoutLogs, newLog]);
+      setSelectedStudentName('');
+      setBodyPart('');
+      setExercise('');
+      setSets('');
+      setReps('');
+      setDayOfWeek('');
+      setDate('');
+      setStatus(statusOptions[0]);
+      setSuccessMessage("Treino atribuído com sucesso!");
+    } catch (err) {
+      console.error("Erro ao atribuir treino:", err);
+      setError(`Erro ao atribuir treino: ${err.message || 'Verifique os dados.'}`);
+    }
+  };
+
+  return (
+    <DashboardLayout>
+      <h2 className={styles.pageTitle}>🏋️ Gerenciamento de Treinos</h2>
+
+      {error && <div className={styles.errorBox}>{error}</div>}
+      {successMessage && <div className={styles.successBox}>{successMessage}</div>}
+
+      <div className={styles.formSection}>
+        <h3 className={styles.formTitle}>Atribuir Novo Treino</h3>
+        <form onSubmit={handleAddWorkoutLog} className={styles.formGrid}>
+          <div className={styles.formGroup}>
+            <label htmlFor="student-name" className={styles.formLabel}>Nome do Aluno <span className={styles.required}>*</span></label>
+            <input
+              list="students"
+              id="student-name"
+              className={styles.formInput}
+              value={selectedStudentName}
+              onChange={(e) => setSelectedStudentName(e.target.value)}
+              placeholder="Selecione ou digite o nome do aluno"
+              required
+            />
+            <datalist id="students">
+              {students.map((student) => (
+                <option key={student.id} value={student.name} />
+              ))}
+            </datalist>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="body-part" className={styles.formLabel}>Parte do Corpo <span className={styles.required}>*</span></label>
+            <select
+              id="body-part"
+              className={styles.formSelect}
+              value={bodyPart}
+              onChange={(e) => {
+                setBodyPart(e.target.value);
+                setExercise('');
+              }}
+              required
+            >
+              <option value="">Selecione uma parte do corpo</option>
+              {Object.keys(EXERCISES_BY_BODY_PART).map((part) => (
+                <option key={part} value={part}>{part}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="exercise" className={styles.formLabel}>Exercício <span className={styles.required}>*</span></label>
+            <select
+              id="exercise"
+              className={styles.formSelect}
+              value={exercise}
+              onChange={(e) => setExercise(e.target.value)}
+              required
+              disabled={!bodyPart}
+            >
+              <option value="">Selecione um exercício</option>
+              {availableExercises.map((ex) => (
+                <option key={ex} value={ex}>{ex}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="sets" className={styles.formLabel}>Séries <span className={styles.required}>*</span></label>
+            <input
+              type="number"
+              id="sets"
+              className={styles.formInput}
+              value={sets}
+              onChange={(e) => setSets(e.target.value)}
+              placeholder="Ex: 3"
+              min="1"
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="reps" className={styles.formLabel}>Repetições <span className={styles.required}>*</span></label>
+            <select
+              id="reps"
+              className={styles.formSelect}
+              value={reps}
+              onChange={(e) => setReps(e.target.value)}
+              required
+            >
+              <option value="">Selecione as repetições</option>
+              {repsOptions.map((rep) => (
+                <option key={rep} value={rep}>{rep}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="day-of-week" className={styles.formLabel}>Dia da Semana <span className={styles.required}>*</span></label>
+            <select
+              id="day-of-week"
+              className={styles.formSelect}
+              value={dayOfWeek}
+              onChange={(e) => setDayOfWeek(e.target.value)}
+              required
+            >
+              <option value="">Selecione o dia</option>
+              {dayOfWeekOptions.map((day) => (
+                <option key={day} value={day}>{day}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="date" className={styles.formLabel}>Data <span className={styles.required}>*</span></label>
+            <input
+              type="date"
+              id="date"
+              className={styles.formInput}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="status" className={styles.formLabel}>Status <span className={styles.required}>*</span></label>
+            <select
+              id="status"
+              className={styles.formSelect}
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              required
+            >
+              {statusOptions.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+          </div>
+
+          <button type="submit" className={styles.formButton}>Atribuir Treino</button>
+        </form>
+      </div>
+
+      <div className={styles.tableSection}>
+        <h3 className={styles.formTitle}>Treinos Atribuídos</h3>
+        <table className={styles.table}>
+          <thead>
+            <tr className={styles.tableHeadRow}>
+              <th className={styles.tableHeader}>Aluno</th>
+              <th className={styles.tableHeader}>Exercício</th>
+              <th className={styles.tableHeader}>Séries</th>
+              <th className={styles.tableHeader}>Repetições</th>
+              <th className={styles.tableHeader}>Data</th>
+              <th className={styles.tableHeader}>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {workoutLogs.length > 0 ? (
+              workoutLogs.map((log) => (
+                <tr key={log.id} className={styles.tableRow}>
+                  <td className={styles.tableData}>{log.student_name}</td>
+                  <td className={styles.tableData}>{log.exercise}</td>
+                  <td className={styles.tableData}>{log.sets}</td>
+                  <td className={styles.tableData}>{log.reps}</td>
+                  <td className={styles.tableData}>{log.date}</td>
+                  <td className={styles.tableData}>{log.status}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className={styles.noWorkouts}>
+                  {error ? 'Os dados do treino estão indisponíveis no momento.' : 'Nenhum treino atribuído ainda.'}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </DashboardLayout>
+  );
+}
+// Dados dos exercícios organizados por parte do corpo
+const EXERCISES_BY_BODY_PART = {
+  "Pectorais": [
+    "Supino Reto com Barra", "Supino Reto com Halteres", "Supino Inclinado com Barra",
+    "Supino Inclinado com Halteres", "Supino Declinado", "Paralelas para Peito",
+    "Crucifixo Reto", "Crucifixo Inclinado", "Crucifixo Declinado",
+    "Crossover na Polia Alta", "Crossover na Polia Média", "Crossover na Polia Baixa",
+    "Peck Deck", "Pullover com Halter", "Flexão Tradicional", "Flexão Aberta",
+    "Flexão Inclinada", "Flexão Declinada", "Flexão Explosiva", "Flexão Diamante"
+  ],
+  "Abdômen": [
+    "Prancha", "Abdominal Supra", "Abdominal Infra", "Abdominal Oblíquo", "Abdominal com Carga"
+  ],
+  "Ombros": [
+    "Desenvolvimento Militar com Barra", "Desenvolvimento Militar com Halteres",
+    "Elevação Lateral", "Elevação Frontal", "Crucifixo Invertido",
+    "Desenvolvimento Arnold", "Puxada para Face (Face Pull)", "Elevação Pike",
+    "Flexão em Parada de Mão", "Elevação Lateral com Elástico"
+  ],
+  "Costas": [
+    "Barra Fixa", "Puxada Frontal", "Puxada Supinada", "Remada Curvada com Barra",
+    "Remada Unilateral com Halter", "Remada Baixa", "Remada Cavalinho",
+    "Remada Máquina", "Pulldown na Polia", "Pullover na Polia",
+    "Levantamento Terra", "Rack Pull", "Face Pull", "Encolhimento com Halteres",
+    "Encolhimento com Barra", "Superman", "Hiperextensão Lombar",
+    "Barra Australiana", "Remada Invertida", "Pulldown Unilateral"
+  ],
+  "Quadríceps": [
+    "Agachamento Livre", "Agachamento Frontal", "Agachamento no Smith",
+    "Leg Press", "Cadeira Extensora", "Afundo", "Passada", "Step-Up no Banco"
+  ],
+  "Glúteos": [
+    "Hip Thrust", "Agachamento Sumô", "Passada", "Agachamento Livre",
+    "Agachamento Máquina", "Quatro Apoios com Caneleira", "Quatro Apoios com Polia",
+    "Agachamento com Bola", "Agachamento Búlgaro", "Ponte de Glúteos"
+  ],
+  "Posterior da Coxa": [
+    "Stiff", "Mesa Flexora", "Levantamento Terra Romeno", "Cadeira Flexora"
+  ],
+  "Interno / Externo da Coxa": [
+    "Cadeira Adutora", "Cadeira Abdutora"
+  ],
+  "Panturrilhas": [
+    "Elevação de Panturrilha em Pé", "Panturrilha Sentado", "Panturrilha Máquina",
+    "Elevação Unilateral", "Panturrilha no Leg Press"
+  ],
+  "Braços (Bíceps)": [
+    "Rosca Direta com Barra", "Rosca Alternada com Halteres", "Rosca Martelo",
+    "Rosca Concentrada", "Rosca Scott", "Rosca Inversa", "Rosca 21", "Rosca no Cabo"
+  ],
+  "Braços (Tríceps)": [
+    "Tríceps Pulley", "Tríceps Corda", "Tríceps Francês", "Tríceps Testa",
+    "Tríceps Coice", "Tríceps Mergulho", "Tríceps Banco", "Tríceps Extensão Overhead"
+  ]
+};
+
+// Opções de Repetições
+const repsOptions = [
+  "6-8", "8-10", "10-12", "12-15", "15-20", "20+"
+];
+
+// Opções de Dia da Semana
+const dayOfWeekOptions = [
+  "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira",
+  "Sexta-feira", "Sábado", "Domingo"
+];
+
+// Opções de Gênero
+const genderOptions = [
+  "Masculino", "Feminino", "Outro"
+];
+
+// Opções de Nível
+const levelOptions = [
+  "Iniciante", "Intermediário", "Avançado"
+];
+
+// Opções de Frequência
+const frequencyOptions = [
+  "1x por semana", "2x por semana", "3x por semana", "4x por semana",
+  "5x por semana", "6x por semana", "Todos os dias"
+];
+
+// Opções de Objetivo
+const objectiveOptions = [
+  "Hipertrofia", "Emagrecimento", "Definição", "Força", "Resistência", "Saúde"
+];
+
+// Opções de Status
+const statusOptions = [
+  "Pendente", "Concluído", "Perdido", "Reagendado"
+];
+
+// Opções de Alimentação
+const alimentationOptions = [
+  "Dieta Flexível", "Low Carb", "Cetogênica", "Vegetariana", "Vegana", "Padrão"
+];
+
+// Opções de Condição Médica
+const medicalOptions = [
+  "Nenhuma", "Hipertensão", "Diabetes", "Problemas Cardíacos", "Lesão Articular", "Asma"
+];
+
+// Opções de Aeróbio
+const aerobicOptions = [
+  "Nenhum", "Caminhada", "Corrida", "Bicicleta", "Elíptico", "Natação", "Dança"
+];
+
+// Opções de Atividade Extra-curricular
+const extraCurricularOptions = [
+  "Nenhuma", "Futebol", "Basquete", "Vôlei", "Natação", "Artes Marciais", "Yoga", "Pilates"
+];
+
+
+export default function Workouts() {
+  const [workoutLogs, setWorkoutLogs] = useState([]);
+  const [students, setStudents] = useState([]);
+  const [selectedStudentName, setSelectedStudentName] = useState('');
+  const [bodyPart, setBodyPart] = useState('');
+  const [exercise, setExercise] = useState('');
+  const [sets, setSets] = useState('');
+  const [reps, setReps] = useState('');
+  const [dayOfWeek, setDayOfWeek] = useState('');
+  const [gender, setGender] = useState('');
+  const [level, setLevel] = useState('');
+  const [frequency, setFrequency] = useState('');
+  const [objective, setObjective] = useState('');
+  const [date, setDate] = useState('');
+  const [status, setStatus] = useState(statusOptions[0]); // Default to 'Pendente'
+  const [alimentation, setAlimentation] = useState('');
+  const [medical, setMedical] = useState('');
+  const [aerobic, setAerobic] = useState('');
+  const [extraCurricular, setExtraCurricular] = useState('');
+
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [filterDayOfWeek, setFilterDayOfWeek] = useState('all'); // Novo estado para o filtro de dia
+
+  // Função para obter a classe de status
+  const getStatusClass = (status) => {
+    switch (status) {
+      case 'Pendente': return styles.statusPending;
+      case 'Concluído': return styles.statusCompleted;
+      case 'Perdido': return styles.statusMissed;
+      default: return styles.statusRescheduled;
+    }
+  };
+
+  // Memoiza a lista de exercícios disponíveis com base na parte do corpo selecionada
+  const availableExercises = useMemo(() => {
+    return bodyPart ? EXERCISES_BY_BODY_PART[bodyPart] : [];
+  }, [bodyPart]);
+
+  // Função para buscar a lista de alunos
+  const fetchStudents = useCallback(async () => {
+    try {
+      const data = await requestJson('/students');
+      if (data === null) {
+        setError('Unable to connect to the server. Please ensure the backend is running on port 5000.');
+        setStudents([]);
+        return;
+      }
+      setStudents(data);
+    } catch (err) {
+      console.error("Erro ao buscar alunos:", err);
+      setError("Erro ao carregar a lista de alunos.");
+    }
+  }, []);
+
+  // Função para buscar os registros de treinos
+  const fetchWorkoutLogs = useCallback(async () => {
+    try {
+      // CORREÇÃO AQUI: Mudado de '/workoutlogs' para '/workouts'
+      const data = await requestJson('/workouts');
+      if (data === null) {
+        setError('Unable to connect to the server. Please ensure the backend is running on port 5000.');
+        setWorkoutLogs([]);
+        return;
+      }
+      // Ordena os logs por nome do aluno, dia da semana e data
+      const sortedLogs = data.sort((a, b) => {
+        const studentCompare = a.student_name.localeCompare(b.student_name);
+        if (studentCompare !== 0) return studentCompare;
+
+        const dayOrder = dayOfWeekOptions.indexOf(a.day_of_week) - dayOfWeekOptions.indexOf(b.day_of_week);
+        if (dayOrder !== 0) return dayOrder;
+
+        return new Date(a.date) - new Date(b.date);
+      });
+      setWorkoutLogs(sortedLogs);
+      setError(null);
+    } catch (err) {
+      console.error("Erro ao buscar registros de treinos:", err);
+      setError("Erro ao carregar registros de treinos. Verifique o backend.");
+      setWorkoutLogs([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchStudents().catch(err => console.error('Error fetching students:', err));
+    fetchWorkoutLogs().catch(err => console.error('Error fetching workouts:', err));
+  }, [fetchStudents, fetchWorkoutLogs]); // Dependências para useCallback
+
+  // Agrupa os treinos por aluno e depois por dia da semana
+  const groupedWorkouts = useMemo(() => {
+    const groups = {};
+    const filteredLogs = filterDayOfWeek === 'all'
+      ? workoutLogs
+      : workoutLogs.filter(log => log.day_of_week === filterDayOfWeek);
+
+    filteredLogs.forEach(log => {
+      if (!groups[log.student_name]) {
+        groups[log.student_name] = {};
+      }
+      if (!groups[log.student_name][log.day_of_week]) {
+        groups[log.student_name][log.day_of_week] = [];
+      }
+      groups[log.student_name][log.day_of_week].push(log);
+    });
+    return groups;
+  }, [workoutLogs, filterDayOfWeek]);
+
+  const handleAddWorkoutLog = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setSuccessMessage(null);
+
+    if (!selectedStudentName || !bodyPart || !exercise || !sets || !reps || !dayOfWeek || !date || !status) {
+      setError("Por favor, preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    try {
+      // CORREÇÃO AQUI: Mudado de '/workoutlogs' para '/workouts'
+      const newLog = await requestJson('/workouts', {
+        method: 'POST',
+        body: JSON.stringify({
+          student_name: selectedStudentName,
+          body_part: bodyPart,
+          exercise: exercise,
+          sets: parseInt(sets),
+          reps: reps,
+          day_of_week: dayOfWeek,
+          gender: gender,
+          level: level,
+          frequency: frequency,
+          objective: objective,
+          date: date,
+          status: status,
+          alimentation: alimentation,
+          medical: medical,
+          aerobic: aerobic,
+          extra_curricular: extraCurricular,
+        }),
+      });
+      // Adiciona o novo log e re-ordena para manter a consistência
+      setWorkoutLogs(prevLogs => {
+        const updatedLogs = [...prevLogs, newLog];
+        return updatedLogs.sort((a, b) => {
+          const studentCompare = a.student_name.localeCompare(b.student_name);
+          if (studentCompare !== 0) return studentCompare;
+
+          const dayOrder = dayOfWeekOptions.indexOf(a.day_of_week) - dayOfWeekOptions.indexOf(b.day_of_week);
+          if (dayOrder !== 0) return dayOrder;
+
+          return new Date(a.date) - new Date(b.date);
+        });
+      });
+
+      // Limpa o formulário
+      setSelectedStudentName('');
+      setBodyPart('');
+      setExercise('');
+      setSets('');
+      setReps('');
+      setDayOfWeek('');
+      setGender('');
+      setLevel('');
+      setFrequency('');
+      setObjective('');
+      setDate('');
+      setStatus(statusOptions[0]);
+      setAlimentation('');
+      setMedical('');
+      setAerobic('');
+      setExtraCurricular('');
+
+      setSuccessMessage("Treino atribuído com sucesso!");
+    } catch (err) {
+      console.error("Erro ao atribuir treino:", err);
+      setError(`Erro ao atribuir treino: ${err.message || 'Verifique os dados.'}`);
+    }
+  };
+
+
+
+  return (
+    <DashboardLayout>
+      <div className={styles.container}>
+        <h1 className={styles.pageTitle}>🏋️ Gerenciamento de Treinos</h1>
+
+        {error && (
+          <div className={styles.errorBox}>
+            {error}
+          </div>
+        )}
+
+        {successMessage && (
+          <div className={styles.successBox}>
+            {successMessage}
+          </div>
+        )}
+
+        <div className={styles.formSection}>
+          <h2 className={styles.formTitle}>Atribuir Novo Treino</h2>
+          <form onSubmit={handleAddWorkoutLog} className={styles.form}>
+            <div className={styles.formGrid}>
+              {/* Campo Nome do Aluno */}
+              <div className={styles.formGroup}>
+                <label htmlFor="student-name">Aluno</label>
+                <input
+                  list="students"
+                  id="student-name"
+                  className={styles.formInput}
+                  value={selectedStudentName}
+                  onChange={(e) => setSelectedStudentName(e.target.value)}
+                  placeholder="Selecione ou digite o nome do aluno"
+                  required
+                />
+                <datalist id="students">
+                  {students.map((student) => (
+                    <option key={student.id} value={student.name} />
+                  ))}
+                </datalist>
+              </div>
+
+              {/* Campo Parte do Corpo */}
+              <div className={styles.formGroup}>
+                <label htmlFor="body-part">Parte do Corpo</label>
+                <select
+                  id="body-part"
+                  className={styles.formSelect}
+                  value={bodyPart}
+                  onChange={(e) => {
+                    setBodyPart(e.target.value);
+                    setExercise(''); // Limpa o exercício ao mudar a parte do corpo
+                  }}
+                  required
+                >
+                  <option value="">Selecione</option>
+                  {Object.keys(EXERCISES_BY_BODY_PART).map((part) => (
+                    <option key={part} value={part}>
+                      {part}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Exercício */}
+              <div className={styles.formGroup}>
+                <label htmlFor="exercise">Exercício</label>
+                <select
+                  id="exercise"
+                  className={styles.formSelect}
+                  value={exercise}
+                  onChange={(e) => setExercise(e.target.value)}
+                  disabled={!bodyPart} // Desabilita se nenhuma parte do corpo for selecionada
+                  required
+                >
+                  <option value="">Selecione</option>
+                  {availableExercises.map((ex) => (
+                    <option key={ex} value={ex}>
+                      {ex}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Séries */}
+              <div className={styles.formGroup}>
+                <label htmlFor="sets">Séries</label>
+                <input
+                  type="number"
+                  id="sets"
+                  className={styles.formInput}
+                  value={sets}
+                  onChange={(e) => setSets(e.target.value)}
+                  min="1"
+                  required
+                />
+              </div>
+
+              {/* Campo Repetições */}
+              <div className={styles.formGroup}>
+                <label htmlFor="reps">Repetições</label>
+                <select
+                  id="reps"
+                  className={styles.formSelect}
+                  value={reps}
+                  onChange={(e) => setReps(e.target.value)}
+                  required
+                >
+                  <option value="">Selecione</option>
+                  {repsOptions.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Dia da Semana */}
+              <div className={styles.formGroup}>
+                <label htmlFor="day-of-week">Dia da Semana</label>
+                <select
+                  id="day-of-week"
+                  className={styles.formSelect}
+                  value={dayOfWeek}
+                  onChange={(e) => setDayOfWeek(e.target.value)}
+                  required
+                >
+                  <option value="">Selecione</option>
+                  {dayOfWeekOptions.map((day) => (
+                    <option key={day} value={day}>
+                      {day}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Gênero */}
+              <div className={styles.formGroup}>
+                <label htmlFor="gender">Gênero</label>
+                <select
+                  id="gender"
+                  className={styles.formSelect}
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  {genderOptions.map((g) => (
+                    <option key={g} value={g}>
+                      {g}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Nível */}
+              <div className={styles.formGroup}>
+                <label htmlFor="level">Nível</label>
+                <select
+                  id="level"
+                  className={styles.formSelect}
+                  value={level}
+                  onChange={(e) => setLevel(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  {levelOptions.map((l) => (
+                    <option key={l} value={l}>
+                      {l}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Frequência */}
+              <div className={styles.formGroup}>
+                <label htmlFor="frequency">Frequência</label>
+                <select
+                  id="frequency"
+                  className={styles.formSelect}
+                  value={frequency}
+                  onChange={(e) => setFrequency(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  {frequencyOptions.map((f) => (
+                    <option key={f} value={f}>
+                      {f}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Objetivo */}
+              <div className={styles.formGroup}>
+                <label htmlFor="objective">Objetivo</label>
+                <select
+                  id="objective"
+                  className={styles.formSelect}
+                  value={objective}
+                  onChange={(e) => setObjective(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  {objectiveOptions.map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Data */}
+              <div className={styles.formGroup}>
+                <label htmlFor="date">Data</label>
+                <input
+                  type="date"
+                  id="date"
+                  className={styles.formInput}
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  required
+                />
+              </div>
+
+              {/* Campo Status */}
+              <div className={styles.formGroup}>
+                <label htmlFor="status">Status</label>
+                <select
+                  id="status"
+                  className={styles.formSelect}
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  required
+                >
+                  {statusOptions.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Alimentação */}
+              <div className={styles.formGroup}>
+                <label htmlFor="alimentation">Alimentação</label>
+                <select
+                  id="alimentation"
+                  className={styles.formSelect}
+                  value={alimentation}
+                  onChange={(e) => setAlimentation(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  {alimentationOptions.map((a) => (
+                    <option key={a} value={a}>
+                      {a}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Condição Médica */}
+              <div className={styles.formGroup}>
+                <label htmlFor="medical">Condição Médica</label>
+                <select
+                  id="medical"
+                  className={styles.formSelect}
+                  value={medical}
+                  onChange={(e) => setMedical(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  {medicalOptions.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Aeróbio */}
+              <div className={styles.formGroup}>
+                <label htmlFor="aerobic">Aeróbio</label>
+                <select
+                  id="aerobic"
+                  className={styles.formSelect}
+                  value={aerobic}
+                  onChange={(e) => setAerobic(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  {aerobicOptions.map((a) => (
+                    <option key={a} value={a}>
+                      {a}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Campo Atividade Extra-curricular */}
+              <div className={styles.formGroup}>
+                <label htmlFor="extra-curricular">Atividade Extra-curricular</label>
+                <select
+                  id="extra-curricular"
+                  className={styles.formSelect}
+                  value={extraCurricular}
+                  onChange={(e) => setExtraCurricular(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  {extraCurricularOptions.map((e) => (
+                    <option key={e} value={e}>
+                      {e}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <button type="submit" className={styles.formButton}>Atribuir Treino</button>
+          </form>
+        </div>
+
+        <div className={styles.tableSection}>
+          <h2 className={styles.formTitle}>Treinos Atribuídos</h2>
+
+          <div className={styles.dayFilter}>
+            <label htmlFor="filter-day" className={styles.filterLabel}>Filtrar por Dia:</label>
+            <select
+              id="filter-day"
+              className={styles.formSelect}
+              value={filterDayOfWeek}
+              onChange={(e) => setFilterDayOfWeek(e.target.value)}
+            >
+              <option value="all">Todos os Dias</option>
+              {dayOfWeekOptions.map((day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {Object.keys(groupedWorkouts).length > 0 ? (
+            Object.keys(groupedWorkouts).sort().map(studentName => (
+              <div key={studentName} className={styles.studentCard}>
+                <h3 className={styles.studentNameHeader}>{studentName}</h3>
+                {Object.keys(groupedWorkouts[studentName]).sort((a, b) => dayOfWeekOptions.indexOf(a) - dayOfWeekOptions.indexOf(b)).map(day => (
+                  <div key={`${studentName}-${day}`} className={styles.daySection}>
+                    <h4 className={styles.dayHeader}>{day}</h4>
+                    <table className={styles.table}>
+                      <thead>
+                        <tr className={styles.tableHeadRow}>
+                          <th className={styles.tableHeader}>Exercício</th>
+                          <th className={styles.tableHeader}>Séries</th>
+                          <th className={styles.tableHeader}>Repetições</th>
+                          <th className={styles.tableHeader}>Gênero</th>
+                          <th className={styles.tableHeader}>Nível</th>
+                          <th className={styles.tableHeader}>Frequência</th>
+                          <th className={styles.tableHeader}>Objetivo</th>
+                          <th className={styles.tableHeader}>Data</th>
+                          <th className={styles.tableHeader}>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {groupedWorkouts[studentName][day].map((w) => (
+                          <tr key={w.id} className={styles.tableRow}>
+                            <td className={styles.tableData}>{w.exercise}</td>
+                            <td className={styles.tableData}>{w.sets}</td>
+                            <td className={styles.tableData}>{w.reps}</td>
+                            <td className={styles.tableData}>{w.gender || '-'}</td>
+                            <td className={styles.tableData}>{w.level || '-'}</td>
+                            <td className={styles.tableData}>{w.frequency || '-'}</td>
+                            <td className={styles.tableData}>{w.objective || '-'}</td>
+                            <td className={styles.tableData}>{w.date}</td>
+                            <td className={styles.tableData}>
+                              <span className={`${styles.statusSpan} ${
+                                w.status === 'Pendente' ? styles.statusPending :
+                                w.status === 'Concluído' ? styles.statusCompleted :
+                                w.status === 'Perdido' ? styles.statusMissed :
+                                styles.statusRescheduled
+                              }`}>
+                                {w.status}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ))}
+              </div>
+            ))
+          ) : (
+            <p className={styles.noWorkouts}>
+              {error ? 'Os dados do treino estão indisponíveis no momento.' : 'Nenhum treino atribuído ainda.'}
+            </p>
+          )}
+        </div>
+      </div>
+    </DashboardLayout>
+  );
+}

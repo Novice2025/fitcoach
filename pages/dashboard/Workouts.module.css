@@ -1,0 +1,292 @@
+/* pages/dashboard/Workouts.module.css */
+
+.container {
+  padding: 20px;
+}
+
+.pageTitle {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.errorBox {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background-color: #fff1f0;
+  color: #a8071a;
+  border: 1px solid #ffa39e;
+  border-radius: 8px;
+}
+
+.successBox {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background-color: #f6ffed;
+  color: #389e0d;
+  border: 1px solid #b7eb8f;
+  border-radius: 8px;
+}
+
+.formSection {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.formTitle {
+  margin-top: 0;
+  color: #555;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.formGroup {
+  margin-bottom: 0; /* Resetar margin-bottom, pois o gap do grid já cuida disso */
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.required {
+  color: #cf1322;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.formInput,
+.formSelect {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.formButton {
+  padding: 10px 20px;
+  background-color: #0070f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  grid-column: 1 / -1; /* Faz o botão ocupar a largura total do grid */
+  justify-self: start;
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+.formButton:hover {
+  background-color: #0056b3;
+}
+
+.tableSection {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* NOVO: Estilos para o filtro de dia da semana */
+.dayFilter {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dayFilter .formLabel {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.dayFilter .formSelect {
+  max-width: 200px;
+}
+
+/* NOVO: Estilos para o agrupamento por aluno e dia */
+.studentCard {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  padding: 15px;
+}
+
+.studentNameHeader {
+  color: #0070f3;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.6rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.daySection {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+}
+
+.dayHeader {
+  color: #555;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.tableHeadRow {
+  background-color: #eef;
+}
+
+.tableHeader {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: #555;
+  white-space: nowrap;
+}
+
+.tableRow:nth-child(even) {
+  background-color: #fcfcfc;
+}
+
+.tableData {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+  color: #333;
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tableDataStrong {
+  font-weight: bold;
+}
+
+.statusSpan {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.statusPending {
+  background-color: #fffbe6;
+  color: #d4b106;
+}
+
+.statusCompleted {
+  background-color: #e6ffed;
+  color: #389e0d;
+}
+
+.statusMissed {
+  background-color: #fff1f0;
+  color: #cf1322;
+}
+
+.statusRescheduled {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.noWorkouts {
+  padding: 20px 10px;
+  color: #999;
+  text-align: center;
+}
+
+/* --- Responsive Adjustments --- */
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 15px;
+  }
+  .pageTitle {
+    font-size: 1.8rem;
+  }
+  .formTitle {
+    font-size: 1.3rem;
+  }
+  .formGrid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+  .formButton {
+    grid-column: 1 / -1;
+  }
+  .tableHeader,
+  .tableData {
+    padding: 10px 8px;
+    font-size: 0.95em;
+  }
+  .dayFilter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .dayFilter .formSelect {
+    max-width: 100%;
+    width: 100%;
+  }
+  .studentNameHeader {
+    font-size: 1.4rem;
+  }
+  .dayHeader {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  .pageTitle {
+    font-size: 1.5rem;
+  }
+  .formTitle {
+    font-size: 1.2rem;
+  }
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+  .formButton {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  .tableSection {
+    padding: 10px;
+  }
+  .tableHeader,
+  .tableData {
+    padding: 8px 5px;
+    font-size: 0.85em;
+  }
+  .studentNameHeader {
+    font-size: 1.2rem;
+  }
+  .dayHeader {
+    font-size: 1rem;
+  }
+}

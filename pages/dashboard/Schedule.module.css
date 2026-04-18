@@ -1,0 +1,269 @@
+/* pages/dashboard/Schedule.module.css */
+
+.container {
+  padding: 20px;
+}
+
+.pageTitle {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.errorBox {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background-color: #fff1f0;
+  color: #a8071a;
+  border: 1px solid #ffa39e;
+  border-radius: 8px;
+}
+
+.successBox {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+  border-radius: 8px;
+}
+
+.formSection {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.formTitle {
+  margin-top: 0;
+  color: #555;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  align-items: start; /* Alinha os itens no topo */
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formLabel {
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.required {
+  color: #ff4d4f;
+  margin-left: 4px;
+  font-size: 0.9em;
+}
+
+.formInput,
+.formSelect {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+textarea.formInput {
+  resize: vertical; /* Permite redimensionar verticalmente */
+  min-height: 60px;
+}
+
+.formButton {
+  padding: 10px 20px;
+  background-color: #0070f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  grid-column: 1 / -1; /* Ocupa a largura total do grid */
+  justify-self: start;
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+.formButton:hover {
+  background-color: #0056b3;
+}
+
+.tableSection {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.tableHeadRow {
+  background-color: #f0f0f0;
+}
+
+.tableHeader {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: #555;
+  white-space: nowrap;
+}
+
+.tableRow:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.tableData {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  color: #333;
+  white-space: nowrap;
+  max-width: 200px; /* Limita a largura para observações longas */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tableDataStrong {
+  font-weight: bold;
+}
+
+.noSessions {
+  padding: 20px 10px;
+  color: #999;
+  text-align: center;
+}
+
+/* Estilos para os status */
+.statusSpan {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.statusScheduled { /* Agendado */
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.statusCompleted { /* Concluído */
+  background-color: #e6ffed;
+  color: #389e0d;
+}
+
+.statusMissed { /* Perdido */
+  background-color: #fff1f0;
+  color: #cf1322;
+}
+
+.statusRescheduled { /* Reagendado */
+  background-color: #fffbe6;
+  color: #d4b106;
+}
+
+/* Estilos para as ações na tabela */
+.actionSelect {
+  padding: 6px 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 0.9em;
+  margin-right: 5px;
+  min-width: 120px;
+}
+
+.editObservationButton {
+  padding: 6px 10px;
+  background-color: #1890ff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.editObservationButton:hover {
+  background-color: #40a9ff;
+}
+
+/* --- Responsive Adjustments --- */
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 15px;
+  }
+  .pageTitle {
+    font-size: 1.8rem;
+  }
+  .formTitle {
+    font-size: 1.3rem;
+  }
+  .formGrid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+  .formButton {
+    grid-column: 1 / -1;
+  }
+  .tableHeader,
+  .tableData {
+    padding: 10px 8px;
+    font-size: 0.95em;
+  }
+  .actionSelect {
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  .pageTitle {
+    font-size: 1.5rem;
+  }
+  .formTitle {
+    font-size: 1.2rem;
+  }
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+  .formButton {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  .tableSection {
+    padding: 10px;
+  }
+  .tableHeader,
+  .tableData {
+    padding: 8px 5px;
+    font-size: 0.85em;
+  }
+  .actionSelect {
+    min-width: unset;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  .editObservationButton {
+    width: 100%;
+  }
+}

@@ -1,0 +1,148 @@
+/* pages/dashboard/Analytics.module.css */
+
+.pageTitle {
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 2rem;
+}
+
+.errorBox {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background-color: #fff1f0;
+  color: #a8071a;
+  border: 1px solid #ffa39e;
+  border-radius: 8px;
+}
+
+.cardContainer {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap; /* Permite que os cards quebrem a linha em telas menores */
+}
+
+.card {
+  flex: 1;
+  min-width: 280px; /* Garante que os cards tenham um tamanho mínimo */
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.cardTitle {
+  color: #666;
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+}
+
+.cardValue {
+  font-size: 3em;
+  font-weight: bold;
+  color: #0070f3; /* Cor padrão, pode ser ajustada por card */
+  margin: 0;
+}
+
+/* Cores específicas para os valores dos cards, se desejar */
+.card:nth-child(1) .cardValue {
+  color: #0070f3; /* Azul para alunos */
+}
+
+.card:nth-child(2) .cardValue {
+  color: #389e0d; /* Verde para receita */
+}
+
+.chartSection {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 30px;
+}
+
+.chartTitle {
+  color: #555;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.filterContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: flex-end; /* Alinha o filtro à direita */
+  flex-wrap: wrap; /* Permite que o filtro quebre a linha */
+}
+
+.filterLabel {
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+}
+
+.filterSelect {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  min-width: 180px;
+  max-width: 100%;
+}
+
+.chartWrapper {
+  position: relative; /* Necessário para o Chart.js */
+  height: 400px; /* Altura fixa para o gráfico */
+  width: 100%;
+}
+
+.noChartData {
+  text-align: center;
+  color: #999;
+  padding: 50px 0;
+  font-size: 1.1rem;
+}
+
+/* --- Responsive Adjustments --- */
+
+@media (max-width: 768px) {
+  .pageTitle {
+    font-size: 1.8rem;
+  }
+  .cardContainer {
+    flex-direction: column; /* Empilha os cards em telas menores */
+    gap: 15px;
+  }
+  .card {
+    min-width: unset; /* Remove o min-width para ocupar a largura total */
+    padding: 20px;
+  }
+  .cardTitle {
+    font-size: 1.1rem;
+  }
+  .cardValue {
+    font-size: 2.5em;
+  }
+  .chartSection {
+    padding: 15px;
+  }
+  .chartTitle {
+    font-size: 1.3rem;
+  }
+  .filterContainer {
+    justify-content: center; /* Centraliza o filtro */
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filterSelect {
+    min-width: unset;
+    width: 100%;
+  }
+  .chartWrapper {
+    height: 300px; /* Altura menor para o gráfico em telas pequenas */
+  }
+}

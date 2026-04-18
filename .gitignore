@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +40,44 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ---------------------------------------------------
+# ADIÇÕES PARA PROJETO PYTHON/FLASK E OUTROS GERAIS
+# ---------------------------------------------------
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/ # Ignora a pasta do ambiente virtual Python
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.hypothesis/
+.pytest_cache/
+celerybeat-schedule.*
+.dmypy.json
+.mypy_cache/
+.pyre/
+.ipynb_checkpoints
+.spyderproject
+.spyproject
+.vscode/ # Ignora configurações específicas do VS Code (opcional, mas recomendado)
+.history/ # Ignora histórico de arquivos do VS Code (opcional)
+
+# Flask
+instance/ # Ignora a pasta 'instance' do Flask
+fitcoach.db # Ignora o arquivo do banco de dados SQLite
+
+# Logs
+*.log
+
+# OS generated files
+.Trashes
+Thumbs.db
