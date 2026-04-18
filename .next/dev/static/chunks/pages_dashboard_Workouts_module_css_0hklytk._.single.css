@@ -1,0 +1,303 @@
+/* [project]/pages/dashboard/Workouts.module.css [client] (css) */
+.Workouts-module__uvmFHq__container {
+  padding: 20px;
+}
+
+.Workouts-module__uvmFHq__pageTitle {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.Workouts-module__uvmFHq__errorBox {
+  color: #a8071a;
+  background-color: #fff1f0;
+  border: 1px solid #ffa39e;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+}
+
+.Workouts-module__uvmFHq__successBox {
+  color: #389e0d;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+}
+
+.Workouts-module__uvmFHq__formSection {
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  padding: 20px;
+  box-shadow: 0 2px 4px #0000000d;
+}
+
+.Workouts-module__uvmFHq__formTitle {
+  color: #555;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.Workouts-module__uvmFHq__formGroup {
+  margin-bottom: 0;
+}
+
+.Workouts-module__uvmFHq__formLabel {
+  color: #333;
+  margin-bottom: 5px;
+  font-weight: 500;
+  display: block;
+}
+
+.Workouts-module__uvmFHq__required {
+  color: #cf1322;
+}
+
+.Workouts-module__uvmFHq__formGrid {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  display: grid;
+}
+
+.Workouts-module__uvmFHq__formInput, .Workouts-module__uvmFHq__formSelect {
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.Workouts-module__uvmFHq__formButton {
+  color: #fff;
+  cursor: pointer;
+  background-color: #0070f3;
+  border: none;
+  border-radius: 5px;
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.Workouts-module__uvmFHq__formButton:hover {
+  background-color: #0056b3;
+}
+
+.Workouts-module__uvmFHq__tableSection {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px #0000000d;
+}
+
+.Workouts-module__uvmFHq__dayFilter {
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.Workouts-module__uvmFHq__dayFilter .Workouts-module__uvmFHq__formLabel {
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+
+.Workouts-module__uvmFHq__dayFilter .Workouts-module__uvmFHq__formSelect {
+  max-width: 200px;
+}
+
+.Workouts-module__uvmFHq__studentCard {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  padding: 15px;
+}
+
+.Workouts-module__uvmFHq__studentNameHeader {
+  color: #0070f3;
+  border-bottom: 2px solid #e0e0e0;
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  font-size: 1.6rem;
+}
+
+.Workouts-module__uvmFHq__daySection {
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.Workouts-module__uvmFHq__dayHeader {
+  color: #555;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.Workouts-module__uvmFHq__table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.Workouts-module__uvmFHq__tableHeadRow {
+  background-color: #eef;
+}
+
+.Workouts-module__uvmFHq__tableHeader {
+  text-align: left;
+  color: #555;
+  white-space: nowrap;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 12px;
+}
+
+.Workouts-module__uvmFHq__tableRow:nth-child(2n) {
+  background-color: #fcfcfc;
+}
+
+.Workouts-module__uvmFHq__tableData {
+  color: #333;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid #eee;
+  max-width: 150px;
+  padding: 10px 12px;
+  overflow: hidden;
+}
+
+.Workouts-module__uvmFHq__tableDataStrong {
+  font-weight: bold;
+}
+
+.Workouts-module__uvmFHq__statusSpan {
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: .85em;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.Workouts-module__uvmFHq__statusPending {
+  color: #d4b106;
+  background-color: #fffbe6;
+}
+
+.Workouts-module__uvmFHq__statusCompleted {
+  color: #389e0d;
+  background-color: #e6ffed;
+}
+
+.Workouts-module__uvmFHq__statusMissed {
+  color: #cf1322;
+  background-color: #fff1f0;
+}
+
+.Workouts-module__uvmFHq__statusRescheduled {
+  color: #1890ff;
+  background-color: #e6f7ff;
+}
+
+.Workouts-module__uvmFHq__noWorkouts {
+  color: #999;
+  text-align: center;
+  padding: 20px 10px;
+}
+
+@media (max-width: 1024px) {
+  .Workouts-module__uvmFHq__container {
+    padding: 15px;
+  }
+
+  .Workouts-module__uvmFHq__pageTitle {
+    font-size: 1.8rem;
+  }
+
+  .Workouts-module__uvmFHq__formTitle {
+    font-size: 1.3rem;
+  }
+
+  .Workouts-module__uvmFHq__formGrid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .Workouts-module__uvmFHq__formButton {
+    grid-column: 1 / -1;
+  }
+
+  .Workouts-module__uvmFHq__tableHeader, .Workouts-module__uvmFHq__tableData {
+    padding: 10px 8px;
+    font-size: .95em;
+  }
+
+  .Workouts-module__uvmFHq__dayFilter {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .Workouts-module__uvmFHq__dayFilter .Workouts-module__uvmFHq__formSelect {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .Workouts-module__uvmFHq__studentNameHeader {
+    font-size: 1.4rem;
+  }
+
+  .Workouts-module__uvmFHq__dayHeader {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .Workouts-module__uvmFHq__container {
+    padding: 10px;
+  }
+
+  .Workouts-module__uvmFHq__pageTitle {
+    font-size: 1.5rem;
+  }
+
+  .Workouts-module__uvmFHq__formTitle {
+    font-size: 1.2rem;
+  }
+
+  .Workouts-module__uvmFHq__formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .Workouts-module__uvmFHq__formButton {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .Workouts-module__uvmFHq__tableSection {
+    padding: 10px;
+  }
+
+  .Workouts-module__uvmFHq__tableHeader, .Workouts-module__uvmFHq__tableData {
+    padding: 8px 5px;
+    font-size: .85em;
+  }
+
+  .Workouts-module__uvmFHq__studentNameHeader {
+    font-size: 1.2rem;
+  }
+
+  .Workouts-module__uvmFHq__dayHeader {
+    font-size: 1rem;
+  }
+}
+
+/*# sourceMappingURL=pages_dashboard_Workouts_module_css_0hklytk._.single.css.map*/

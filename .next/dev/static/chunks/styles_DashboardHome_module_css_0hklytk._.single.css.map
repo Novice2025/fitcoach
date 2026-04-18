@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/styles/DashboardHome.module.css"],"sourcesContent":["/* styles/DashboardHome.module.css */\n\n.container {\n  padding: 2rem;\n}\n\n.title {\n  font-size: 1.5rem;\n  font-weight: 600;\n  margin-bottom: 1rem;\n}\n\n.table {\n  width: 100%;\n  border-collapse: collapse;\n}\n\n.table th,\n.table td {\n  padding: 0.75rem;\n  border: 1px solid #e5e7eb;\n  text-align: left;\n}"],"names":[],"mappings":"AAEA;;;;AAIA;;;;;;AAMA;;;;;AAKA"}}]
+}
