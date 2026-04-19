@@ -1,0 +1,81 @@
+globalThis.__BUILD_MANIFEST = {
+  "pages": {
+    "/_app": [
+      "static/chunks/0qhd1-7.egdny.js",
+      "static/chunks/0mmpg.u0.bfoa.js",
+      "static/chunks/16f~9.-bdk095.js",
+      "static/chunks/turbopack-0ug68jy0mvtq1.js"
+    ],
+    "/_error": [
+      "static/chunks/0-4vw3k1vpd4..js",
+      "static/chunks/0mmpg.u0.bfoa.js",
+      "static/chunks/16f~9.-bdk095.js",
+      "static/chunks/turbopack-0yej-6xh~x.o6.js"
+    ],
+    "/dashboard": [
+      "static/chunks/0lmx.fq-4ruak.js",
+      "static/chunks/0mmpg.u0.bfoa.js",
+      "static/chunks/16f~9.-bdk095.js",
+      "static/chunks/0oiv9lc-23pxq.css",
+      "static/chunks/turbopack-044341tznkeld.js"
+    ],
+    "/dashboard/analytics": [
+      "static/chunks/0nv6ywybxilvv.js",
+      "static/chunks/16f~9.-bdk095.js",
+      "static/chunks/0mmpg.u0.bfoa.js",
+      "static/chunks/04cezknxzl.pw.js",
+      "static/chunks/0oiv9lc-23pxq.css",
+      "static/chunks/turbopack-0d~nbrzqc6aeb.js"
+    ],
+    "/dashboard/payments": [
+      "static/chunks/12r_hnkdjcfex.js",
+      "static/chunks/0mmpg.u0.bfoa.js",
+      "static/chunks/16f~9.-bdk095.js",
+      "static/chunks/0oiv9lc-23pxq.css",
+      "static/chunks/turbopack-0p~oeq4c~ifk2.js"
+    ],
+    "/dashboard/schedule": [
+      "static/chunks/1129p68bq7to..js",
+      "static/chunks/0mmpg.u0.bfoa.js",
+      "static/chunks/16f~9.-bdk095.js",
+      "static/chunks/0oiv9lc-23pxq.css",
+      "static/chunks/turbopack-012tvgaa223_7.js"
+    ],
+    "/dashboard/students": [
+      "static/chunks/0r7ronuw~7~jb.js",
+      "static/chunks/0mmpg.u0.bfoa.js",
+      "static/chunks/16f~9.-bdk095.js",
+      "static/chunks/0oiv9lc-23pxq.css",
+      "static/chunks/turbopack-16.xq3nkcne3t.js"
+    ],
+    "/dashboard/weight": [
+      "static/chunks/047ik9xy7e7z8.js",
+      "static/chunks/0mmpg.u0.bfoa.js",
+      "static/chunks/16f~9.-bdk095.js",
+      "static/chunks/0oiv9lc-23pxq.css",
+      "static/chunks/turbopack-0vi7jsj0_anzw.js"
+    ],
+    "/dashboard/workouts": [
+      "static/chunks/0yb2j6becga4a.js",
+      "static/chunks/0mmpg.u0.bfoa.js",
+      "static/chunks/16f~9.-bdk095.js",
+      "static/chunks/0oiv9lc-23pxq.css",
+      "static/chunks/turbopack-0g-4yqxi3olta.js"
+    ]
+  },
+  "devFiles": [],
+  "polyfillFiles": [
+    "static/chunks/03~yq9q893hmn.js"
+  ],
+  "lowPriorityFiles": [
+    "static/FZN4jroqYRanSYh-pSJjT/_buildManifest.js",
+    "static/FZN4jroqYRanSYh-pSJjT/_ssgManifest.js",
+    "static/FZN4jroqYRanSYh-pSJjT/_clientMiddlewareManifest.js"
+  ],
+  "rootMainFiles": [
+    "static/chunks/0ljspdd3cv1ft.js",
+    "static/chunks/0~rnrpz-e-o0m.js",
+    "static/chunks/0mstyq17cbf8-.js",
+    "static/chunks/turbopack-0qw1gjcvkb0hn.js"
+  ]
+};
