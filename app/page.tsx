@@ -14,23 +14,21 @@ const Charts = dynamic(() => import("@/src/components/Charts"), {
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('students');
 
   return (
     <main className="min-h-screen bg-black flex">
 
       {/* Desktop Sidebar */}
       <div className="hidden md:block">
-        <Sidebar />
+        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
       {/* Mobile Menu */}
       {open && (
         <div className="fixed inset-0 z-50 md:hidden bg-black">
-          <Sidebar />
-          <button
-            onClick={() => setOpen(false)}
-            className="text-white p-4"
-          >
+          <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+          <button onClick={() => setOpen(false)} className="text-white p-4">
             Close
           </button>
         </div>
@@ -41,50 +39,42 @@ export default function Home() {
         {/* Top Bar */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white">
-              Dashboard
-            </h1>
-            <p className="text-zinc-400">
-              Neuli Fitness Coach
-            </p>
+            <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+            <p className="text-zinc-400">Neuli Fitness Coach</p>
           </div>
-
-          <button
-            onClick={() => setOpen(true)}
-            className="md:hidden text-white"
-          >
+          <button onClick={() => setOpen(true)} className="md:hidden text-white">
             <Menu size={30} />
           </button>
         </div>
 
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-
           <div className="bg-zinc-900 rounded-2xl p-6 text-white shadow-xl">
             <p className="text-zinc-400">Students</p>
             <h2 className="text-3xl font-bold">12</h2>
           </div>
-
           <div className="bg-zinc-900 rounded-2xl p-6 text-white shadow-xl">
             <p className="text-zinc-400">Revenue</p>
             <h2 className="text-3xl font-bold">$2400</h2>
           </div>
-
           <div className="bg-zinc-900 rounded-2xl p-6 text-white shadow-xl">
             <p className="text-zinc-400">Classes</p>
             <h2 className="text-3xl font-bold">24</h2>
           </div>
-
           <div className="bg-zinc-900 rounded-2xl p-6 text-white shadow-xl">
             <p className="text-zinc-400">Active</p>
             <h2 className="text-3xl font-bold">9</h2>
           </div>
-
         </div>
 
-        <StudentsTable />
-        <Attendance />
-        <Charts />
+        {/* Tab Content */}
+        {activeTab === 'students' && <StudentsTable />}
+        {activeTab === 'students' && <Attendance />}
+        {activeTab === 'analytics' && <Charts />}
+        {activeTab === 'workouts' && <p className="text-white mt-8 text-xl">💪 Workouts coming soon.</p>}
+        {activeTab === 'payments' && <p className="text-white mt-8 text-xl">💳 Payments coming soon.</p>}
+        {activeTab === 'schedule' && <p className="text-white mt-8 text-xl">📅 Schedule coming soon.</p>}
+        {activeTab === 'settings' && <p className="text-white mt-8 text-xl">⚙️ Settings coming soon.</p>}
 
       </section>
     </main>
