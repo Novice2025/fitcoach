@@ -1,0 +1,184 @@
+/* [project]/components/DashboardLayout.module.css [client] (css) */
+.DashboardLayout-module__zGh_ua__container {
+  background-color: #f0f2f5;
+  min-height: 100vh;
+  display: flex;
+}
+
+.DashboardLayout-module__zGh_ua__sidebar {
+  color: #ecf0f1;
+  box-sizing: border-box;
+  z-index: 1000;
+  background-color: #2c3e50;
+  flex-direction: column;
+  width: 250px;
+  height: 100vh;
+  padding: 20px;
+  transition: transform .3s ease-in-out;
+  display: flex;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  box-shadow: 2px 0 5px #0000001a;
+}
+
+.DashboardLayout-module__zGh_ua__sidebarHeader {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.DashboardLayout-module__zGh_ua__mobileMenuButton {
+  color: #ecf0f1;
+  cursor: pointer;
+  background-color: #34495e;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  display: none;
+}
+
+.DashboardLayout-module__zGh_ua__navList {
+  flex-grow: 1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.DashboardLayout-module__zGh_ua__navItem {
+  margin-bottom: 10px;
+}
+
+.DashboardLayout-module__zGh_ua__navLink {
+  color: #ecf0f1;
+  border-radius: 5px;
+  align-items: center;
+  padding: 12px 15px;
+  text-decoration: none;
+  transition: background-color .2s ease-in-out, color .2s ease-in-out;
+  display: flex;
+}
+
+.DashboardLayout-module__zGh_ua__navLink:hover {
+  color: #fff;
+  background-color: #34495e;
+}
+
+.DashboardLayout-module__zGh_ua__navLink.DashboardLayout-module__zGh_ua__active {
+  color: #fff;
+  background-color: #007bff;
+  font-weight: bold;
+}
+
+.DashboardLayout-module__zGh_ua__navIcon {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.DashboardLayout-module__zGh_ua__mainContent {
+  z-index: 1;
+  box-sizing: border-box;
+  flex-direction: column;
+  flex-grow: 1;
+  width: calc(100% - 250px);
+  min-height: 100vh;
+  margin-left: 250px;
+  display: flex;
+  position: relative;
+}
+
+.DashboardLayout-module__zGh_ua__header {
+  z-index: 999;
+  background-color: #fff;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  display: flex;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 4px #0000000d;
+}
+
+.DashboardLayout-module__zGh_ua__headerTitle {
+  color: #333;
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.DashboardLayout-module__zGh_ua__logoutButton {
+  color: #fff;
+  cursor: pointer;
+  background-color: #dc3545;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-weight: bold;
+  transition: background-color .2s ease-in-out;
+}
+
+.DashboardLayout-module__zGh_ua__logoutButton:hover {
+  background-color: #c82333;
+}
+
+@media (max-width: 768px) {
+  .DashboardLayout-module__zGh_ua__sidebar {
+    width: 220px;
+    transform: translateX(-100%);
+  }
+
+  .DashboardLayout-module__zGh_ua__sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .DashboardLayout-module__zGh_ua__mobileMenuButton {
+    z-index: 1001;
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: -100px;
+  }
+
+  .DashboardLayout-module__zGh_ua__mainContent {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .DashboardLayout-module__zGh_ua__header {
+    padding: 15px 20px;
+  }
+
+  .DashboardLayout-module__zGh_ua__headerTitle {
+    font-size: 1.4rem;
+  }
+
+  .DashboardLayout-module__zGh_ua__logoutButton {
+    padding: 8px 15px;
+    font-size: .9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .DashboardLayout-module__zGh_ua__sidebar {
+    width: 100%;
+  }
+
+  .DashboardLayout-module__zGh_ua__mobileMenuButton {
+    right: 10px;
+  }
+
+  .DashboardLayout-module__zGh_ua__sidebarHeader {
+    font-size: 1.5rem;
+  }
+
+  .DashboardLayout-module__zGh_ua__navLink {
+    padding: 10px 12px;
+    font-size: .95rem;
+  }
+}
+
+/*# sourceMappingURL=components_DashboardLayout_module_0pq0g~m.css.map*/
