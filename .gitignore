@@ -81,3 +81,4 @@
  # OS generated files
  .Trashes
  Thumbs.db
+.next/
