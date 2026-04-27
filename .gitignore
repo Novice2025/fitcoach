@@ -84,3 +84,6 @@
 .next/
 node_modules
 node_modules
+.env.local
+.env.local.bak
+.env.example.bak
