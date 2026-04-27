@@ -1,3 +1,6 @@
+'use client'
+import React from 'react'
+
 export default function Attendance() {
   return (
     <div className="bg-zinc-900 rounded-2xl p-6 mt-6 text-white">

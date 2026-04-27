@@ -131,14 +131,19 @@ def delete_workout(wid):
 def get_payments():
     db = get_db()
     rows = db.execute('SELECT * FROM payments').fetchall()
-    return jsonify([dict(r) for r in rows])
+    result = []
+    for r in rows:
+        row = dict(r)
+        row['student'] = row.get('student_name', '')
+        result.append(row)
+    return jsonify(result)
 
 @app.route('/payments', methods=['POST'])
 def add_payment():
     data = request.json
     db = get_db()
     db.execute('INSERT INTO payments (student_name, amount, date, status) VALUES (?, ?, ?, ?)',
-               [data['student'], data['amount'], data['date'], data.get('status', 'Pending')])
+               [data['student'], data['amount'], data['date'], data.get('status', 'Pendente')])
     db.commit()
     return jsonify({"message": "Payment added"}), 201
 
@@ -147,7 +152,7 @@ def update_payment(pid):
     data = request.json
     db = get_db()
     db.execute('UPDATE payments SET student_name=?, amount=?, date=?, status=? WHERE id=?',
-               [data['student'], data['amount'], data['date'], data.get('status', 'Pending'), pid])
+               [data['student'], data['amount'], data['date'], data.get('status', 'Pendente'), pid])
     db.commit()
     return jsonify({"message": "Payment updated"})
 
